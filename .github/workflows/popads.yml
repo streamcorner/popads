@@ -19,8 +19,19 @@ jobs:
           POPADS_XYZ: ${{ secrets.POPADS_XYZ }}
          
         run: |
-          curl -f -o popads_info.js $POPADS_INFO
-          curl -f -o popads_xyz.js $POPADS_XYZ
+          curl -f -o popads_info_raw.js $POPADS_INFO
+          curl -f -o popads_xyz_raw.js $POPADS_XYZ
+          
+      - name: Extract pure JavaScript
+        run: |
+          # Extract JavaScript from popads_info.js
+          sed -n 's/.*<script[^>]*>\(.*\)<\/script>.*/\1/p' popads_info_raw.js > popads_info.js
+          
+          # Extract JavaScript from popads_xyz.js
+          sed -n 's/.*<script[^>]*>\(.*\)<\/script>.*/\1/p' popads_xyz_raw.js > popads_xyz.js
+          
+          # Remove raw files
+          rm popads_info_raw.js popads_xyz_raw.js
           
       - name: Commit and push
         run: |
