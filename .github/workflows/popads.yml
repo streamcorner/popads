@@ -1,0 +1,31 @@
+name: Update PopAds Library
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-library:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Fetch PopAds library
+        env:
+          POPADS_INFO: ${{ secrets.POPADS_INFO }}
+          POPADS_XYZ: ${{ secrets.POPADS_XYZ }}
+         
+        run: |
+          curl -f -o popads_info.js $POPADS_INFO
+          curl -f -o popads_xyz.js $POPADS_XYZ
+          
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add popads_info.js popads_xyz.js
+          git diff --staged --quiet || git commit -m "Update PopAds library"
+          git push
