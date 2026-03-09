@@ -20,6 +20,7 @@ jobs:
           POPADS_CFD: ${{ secrets.POPADS_CFD }}
           POPADS_SBS: ${{ secrets.POPADS_SBS }}
           POPADS_KAMEHA: ${{ secrets.POPADS_KAMEHA }}
+          POPADS_PHC: ${{ secrets.POPADS_PHC }}
          
         run: |
           curl -f -o popads_info_raw.js "$POPADS_INFO"
@@ -27,6 +28,7 @@ jobs:
           curl -f -o popads_kameha_raw.js "$POPADS_KAMEHA"
           curl -f -o popads_cfd_raw.js "$POPADS_CFD"
           curl -f -o popads_sbs_raw.js "$POPADS_SBS"
+          curl -f -o popads_phc_raw.js "$POPADS_PHC"
           
       - name: Extract pure JavaScript
         run: |
@@ -44,14 +46,17 @@ jobs:
 
           # Extract JavaScript from popads_sbs.js using perl
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_sbs_raw.js > popads_sbs.js
+
+          # Extract JavaScript from popads_phc.js using perl
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_phc_raw.js > popads_phc.js
           
           # Remove raw files
-          rm popads_info_raw.js popads_xyz_raw.js popads_cfd_raw.js popads_sbs_raw.js popads_kameha_raw.js
+          rm popads_info_raw.js popads_xyz_raw.js popads_cfd_raw.js popads_sbs_raw.js popads_kameha_raw.js popads_phc_raw.js
           
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add popads_info.js popads_xyz.js popads_cfd.js popads_sbs.js popads_kameha.js
+          git add popads_info.js popads_xyz.js popads_cfd.js popads_sbs.js popads_kameha.js popads_phc.js
           git diff --staged --quiet || git commit -m "Update PopAds library"
           git push
