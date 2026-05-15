@@ -16,57 +16,54 @@ jobs:
       - name: Fetch PopAds library
         env:
           POPADS_INFO: ${{ secrets.POPADS_INFO }}
-          POPADS_XYZ: ${{ secrets.POPADS_XYZ }}
-          POPADS_CFD: ${{ secrets.POPADS_CFD }}
-          POPADS_SBS: ${{ secrets.POPADS_SBS }}
           POPADS_KAMEHA: ${{ secrets.POPADS_KAMEHA }}
-          POPADS_PHC: ${{ secrets.POPADS_PHC }}
           POPADS_VU: ${{ secrets.POPADS_VU }}
           POPADS_CC: ${{ secrets.POPADS_CC }}
+          POPADS_GETSU_SIMPLE: ${{ secrets.POPADS_GETSU_SIMPLE }}
+          POPADS_GETSU_SPORTSEMBED: ${{ secrets.POPADS_GETSU_SPORTSEMBED }}
+          POPADS_GETSU_ALPHA: ${{ secrets.POPADS_GETSU_ALPHA }}
+          POPADS_GETSU_GOOZ: ${{ secrets.POPADS_GETSU_GOOZ }}
+          POPADS_GETSU_NICK: ${{ secrets.POPADS_GETSU_NICK }}
+          POPADS_GETSU_PLAY2: ${{ secrets.POPADS_GETSU_PLAY2 }}
+          POPADS_GETSU_TOPEMBED: ${{ secrets.POPADS_GETSU_TOPEMBED }}
          
         run: |
           curl -f -o popads_info_raw.js "$POPADS_INFO"
-          curl -f -o popads_xyz_raw.js "$POPADS_XYZ"
           curl -f -o popads_kameha_raw.js "$POPADS_KAMEHA"
-          curl -f -o popads_cfd_raw.js "$POPADS_CFD"
-          curl -f -o popads_sbs_raw.js "$POPADS_SBS"
-          curl -f -o popads_phc_raw.js "$POPADS_PHC"
           curl -f -o popads_vu_raw.js "$POPADS_VU"
           curl -f -o popads_cc_raw.js "$POPADS_CC"
+          curl -f -o popads_getsu_simple_raw.js "$POPADS_GETSU_SIMPLE"
+          curl -f -o popads_getsu_sportsembed_raw.js "$POPADS_GETSU_SPORTSEMBED"
+          curl -f -o popads_getsu_alpha_raw.js "$POPADS_GETSU_ALPHA"
+          curl -f -o popads_getsu_gooz_raw.js "$POPADS_GETSU_GOOZ"
+          curl -f -o popads_getsu_nick_raw.js "$POPADS_GETSU_NICK"
+          curl -f -o popads_getsu_play2_raw.js "$POPADS_GETSU_PLAY2"
+          curl -f -o popads_getsu_topembed_raw.js "$POPADS_GETSU_TOPEMBED"
           
       - name: Extract pure JavaScript
         run: |
-          # Extract JavaScript from popads_info.js using perl
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_info_raw.js > popads_info.js
-          
-          # Extract JavaScript from popads_xyz.js using perl
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_xyz_raw.js > popads_xyz.js
-
-          # Extract JavaScript from popads_cfd.js using perl
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_cfd_raw.js > popads_cfd.js
-
-          # Extract JavaScript from popads_xyz.js using perl
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_kameha_raw.js > popads_kameha.js
-
-          # Extract JavaScript from popads_sbs.js using perl
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_sbs_raw.js > popads_sbs.js
-
-          # Extract JavaScript from popads_phc.js using perl
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_phc_raw.js > popads_phc.js
-
-          # Extract JavaScript from popads_vu.js using perl
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_vu_raw.js > popads_vu.js
-
-          # Extract JavaScript from popads_cc.js using perl
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_cc_raw.js > popads_cc.js
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_simple_raw.js > popads_getsu_simple.js
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_sportsembed_raw.js > popads_getsu_sportsembed.js
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_alpha_raw.js > popads_getsu_alpha.js
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_gooz_raw.js > popads_getsu_gooz.js
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_nick_raw.js > popads_getsu_nick.js
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_play2_raw.js > popads_getsu_play2.js
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_topembed_raw.js > popads_getsu_topembed.js
           
-          # Remove raw files
-          rm popads_info_raw.js popads_xyz_raw.js popads_cfd_raw.js popads_sbs_raw.js popads_kameha_raw.js popads_phc_raw.js popads_vu_raw.js popads_cc_raw.js
+          # Remove all raw files
+          rm *_raw.js
           
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add popads_info.js popads_xyz.js popads_cfd.js popads_sbs.js popads_kameha.js popads_phc.js popads_vu.js popads_cc.js
+          git add popads_info.js popads_kameha.js popads_vu.js popads_cc.js \
+                  popads_getsu_simple.js popads_getsu_sportsembed.js \
+                  popads_getsu_alpha.js popads_getsu_gooz.js popads_getsu_nick.js \
+                  popads_getsu_play2.js popads_getsu_topembed.js
           git diff --staged --quiet || git commit -m "Update PopAds library"
           git push
