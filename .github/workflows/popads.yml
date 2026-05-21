@@ -22,6 +22,7 @@ jobs:
           POPADS_SITE: ${{ secrets.POPADS_SITE }}
 
           POPADS_NINJA_CC: ${{ secrets.POPADS_NINJA_CC }}
+          POPADS_NINJA_SITE: ${{ secrets.POPADS_NINJA_SITE }}
           
           POPADS_GETSU_SIMPLE: ${{ secrets.POPADS_GETSU_SIMPLE }}
           POPADS_GETSU_SPORTSEMBED: ${{ secrets.POPADS_GETSU_SPORTSEMBED }}
@@ -39,6 +40,7 @@ jobs:
           curl -f -o popads_site_raw.js "$POPADS_SITE"
 
           curl -f -o popads_ninja_cc_raw.js "$POPADS_NINJA_CC"
+          curl -f -o popads_ninja_site_raw.js "$POPADS_NINJA_SITE"
 
           curl -f -o popads_getsu_simple_raw.js "$POPADS_GETSU_SIMPLE"
           curl -f -o popads_getsu_sportsembed_raw.js "$POPADS_GETSU_SPORTSEMBED"
@@ -57,6 +59,7 @@ jobs:
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_site_raw.js > popads_site.js
 
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_ninja_cc_raw.js > popads_ninja_cc.js
+          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_ninja_site_raw.js > popads_ninja_site.js
           
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_simple_raw.js > popads_getsu_simple.js
           perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_sportsembed_raw.js > popads_getsu_sportsembed.js
@@ -74,9 +77,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          
           git add popads_info.js popads_kameha.js popads_vu.js popads_cc.js popads_site.js
 
           git add popads_ninja_cc.js
+          git add popads_ninja_site.js
           
           git add popads_getsu_simple.js popads_getsu_sportsembed.js popads_getsu_alpha.js popads_getsu_gooz.js popads_getsu_nick.js popads_getsu_play2.js popads_getsu_topembed.js
           
