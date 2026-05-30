@@ -18,6 +18,7 @@ jobs:
           POPADS_INFO: ${{ secrets.POPADS_INFO }}
           POPADS_SITE: ${{ secrets.POPADS_SITE }}
           POPADS_FYI: ${{ secrets.POPADS_FYI }}
+          POPADS_IO: ${{ secrets.POPADS_IO }}
 
           POPADS_NINJA_CC: ${{ secrets.POPADS_NINJA_CC }}
           POPADS_NINJA_SITE: ${{ secrets.POPADS_NINJA_SITE }}
@@ -37,6 +38,7 @@ jobs:
             POPADS_INFO
             POPADS_SITE
             POPADS_FYI
+            POPADS_IO
             POPADS_NINJA_CC
             POPADS_NINJA_SITE
             POPADS_KAMEHA
