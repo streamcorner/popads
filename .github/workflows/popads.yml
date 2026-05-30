@@ -13,16 +13,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Fetch PopAds library
+      - name: Fetch, extract, and commit PopAds libraries
         env:
           POPADS_INFO: ${{ secrets.POPADS_INFO }}
-          POPADS_KAMEHA: ${{ secrets.POPADS_KAMEHA }}
-          POPADS_VU: ${{ secrets.POPADS_VU }}
-          POPADS_CC: ${{ secrets.POPADS_CC }}
           POPADS_SITE: ${{ secrets.POPADS_SITE }}
+          POPADS_FYI: ${{ secrets.POPADS_FYI }}
 
           POPADS_NINJA_CC: ${{ secrets.POPADS_NINJA_CC }}
           POPADS_NINJA_SITE: ${{ secrets.POPADS_NINJA_SITE }}
+
+          POPADS_KAMEHA: ${{ secrets.POPADS_KAMEHA }}
           
           POPADS_GETSU_SIMPLE: ${{ secrets.POPADS_GETSU_SIMPLE }}
           POPADS_GETSU_SPORTSEMBED: ${{ secrets.POPADS_GETSU_SPORTSEMBED }}
@@ -31,59 +31,39 @@ jobs:
           POPADS_GETSU_NICK: ${{ secrets.POPADS_GETSU_NICK }}
           POPADS_GETSU_PLAY2: ${{ secrets.POPADS_GETSU_PLAY2 }}
           POPADS_GETSU_TOPEMBED: ${{ secrets.POPADS_GETSU_TOPEMBED }}
-         
-        run: |
-          curl -f -o popads_info_raw.js "$POPADS_INFO"
-          curl -f -o popads_kameha_raw.js "$POPADS_KAMEHA"
-          curl -f -o popads_vu_raw.js "$POPADS_VU"
-          curl -f -o popads_cc_raw.js "$POPADS_CC"
-          curl -f -o popads_site_raw.js "$POPADS_SITE"
 
-          curl -f -o popads_ninja_cc_raw.js "$POPADS_NINJA_CC"
-          curl -f -o popads_ninja_site_raw.js "$POPADS_NINJA_SITE"
-
-          curl -f -o popads_getsu_simple_raw.js "$POPADS_GETSU_SIMPLE"
-          curl -f -o popads_getsu_sportsembed_raw.js "$POPADS_GETSU_SPORTSEMBED"
-          curl -f -o popads_getsu_alpha_raw.js "$POPADS_GETSU_ALPHA"
-          curl -f -o popads_getsu_gooz_raw.js "$POPADS_GETSU_GOOZ"
-          curl -f -o popads_getsu_nick_raw.js "$POPADS_GETSU_NICK"
-          curl -f -o popads_getsu_play2_raw.js "$POPADS_GETSU_PLAY2"
-          curl -f -o popads_getsu_topembed_raw.js "$POPADS_GETSU_TOPEMBED"
-          
-      - name: Extract pure JavaScript
         run: |
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_info_raw.js > popads_info.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_kameha_raw.js > popads_kameha.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_vu_raw.js > popads_vu.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_cc_raw.js > popads_cc.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_site_raw.js > popads_site.js
+          POPADS_VARS=(
+            POPADS_INFO
+            POPADS_SITE
+            POPADS_FYI
+            POPADS_NINJA_CC
+            POPADS_NINJA_SITE
+            POPADS_KAMEHA
+            POPADS_GETSU_SIMPLE
+            POPADS_GETSU_SPORTSEMBED
+            POPADS_GETSU_ALPHA
+            POPADS_GETSU_GOOZ
+            POPADS_GETSU_NICK
+            POPADS_GETSU_PLAY2
+            POPADS_GETSU_TOPEMBED
+          )
 
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_ninja_cc_raw.js > popads_ninja_cc.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_ninja_site_raw.js > popads_ninja_site.js
-          
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_simple_raw.js > popads_getsu_simple.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_sportsembed_raw.js > popads_getsu_sportsembed.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_alpha_raw.js > popads_getsu_alpha.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_gooz_raw.js > popads_getsu_gooz.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_nick_raw.js > popads_getsu_nick.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_play2_raw.js > popads_getsu_play2.js
-          perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' popads_getsu_topembed_raw.js > popads_getsu_topembed.js
-          
-          
-          # Remove all raw files
-          rm *_raw.js
-          
-      - name: Commit and push
-        run: |
+          for var in "${POPADS_VARS[@]}"; do
+            url="${!var}"
+            [ -z "$url" ] && continue
+
+            filename="$(echo "$var" | tr '[:upper:]' '[:lower:]')"
+
+            echo "Processing $var → ${filename}.js"
+            curl -f -o "${filename}_raw.js" "$url"
+            perl -0777 -ne 'print $1 if /<script[^>]*>(.*?)<\/script>/s' "${filename}_raw.js" > "${filename}.js"
+          done
+
+          rm -f *_raw.js
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git add popads_info.js popads_kameha.js popads_vu.js popads_cc.js popads_site.js
-
-          git add popads_ninja_cc.js
-          git add popads_ninja_site.js
-          
-          git add popads_getsu_simple.js popads_getsu_sportsembed.js popads_getsu_alpha.js popads_getsu_gooz.js popads_getsu_nick.js popads_getsu_play2.js popads_getsu_topembed.js
-          
+          git add popads_*.js
           git diff --staged --quiet || git commit -m "Update PopAds library"
           git push
