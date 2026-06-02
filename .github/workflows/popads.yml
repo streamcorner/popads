@@ -20,8 +20,8 @@ jobs:
           POPADS_FYI: ${{ secrets.POPADS_FYI }}
           POPADS_IO: ${{ secrets.POPADS_IO }}
 
-          POPADS_NINJA_CC: ${{ secrets.POPADS_NINJA_CC }}
-          POPADS_NINJA_SITE: ${{ secrets.POPADS_NINJA_SITE }}
+          POPADS_NINJA_XYX: ${{ secrets.POPADS_NINJA_XYZ }}
+          POPADS_NINJA_ONLINE: ${{ secrets.POPADS_NINJA_ONLINE }}
 
           POPADS_KAMEHA: ${{ secrets.POPADS_KAMEHA }}
           
@@ -39,8 +39,8 @@ jobs:
             POPADS_SITE
             POPADS_FYI
             POPADS_IO
-            POPADS_NINJA_CC
-            POPADS_NINJA_SITE
+            POPADS_NINJA_XYX
+            POPADS_NINJA_ONLINE
             POPADS_KAMEHA
             POPADS_GETSU_SIMPLE
             POPADS_GETSU_SPORTSEMBED
