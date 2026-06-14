@@ -20,7 +20,7 @@ jobs:
           POPADS_FYI: ${{ secrets.POPADS_FYI }}
           POPADS_IO: ${{ secrets.POPADS_IO }}
 
-          POPADS_NINJA_XYX: ${{ secrets.POPADS_NINJA_XYZ }}
+          POPADS_NINJA_XYZ: ${{ secrets.POPADS_NINJA_XYZ }}
           POPADS_NINJA_ONLINE: ${{ secrets.POPADS_NINJA_ONLINE }}
 
           POPADS_KAMEHA: ${{ secrets.POPADS_KAMEHA }}
