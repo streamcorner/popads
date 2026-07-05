@@ -16,9 +16,10 @@ jobs:
       - name: Fetch, extract, and commit PopAds libraries
         env:
           POPADS_INFO: ${{ secrets.POPADS_INFO }}
-          POPADS_SITE: ${{ secrets.POPADS_SITE }}
           POPADS_FYI: ${{ secrets.POPADS_FYI }}
-          POPADS_IO: ${{ secrets.POPADS_IO }}
+          POPADS_FOO: ${{ secrets.POPADS_FOO }}
+          POPADS_CLOUD: ${{ secrets.POPADS_CLOUD }}
+          POPADS_FUN: ${{ secrets.POPADS_FUN }}
 
           POPADS_NINJA_XYZ: ${{ secrets.POPADS_NINJA_XYZ }}
           POPADS_NINJA_ONLINE: ${{ secrets.POPADS_NINJA_ONLINE }}
@@ -36,9 +37,10 @@ jobs:
         run: |
           POPADS_VARS=(
             POPADS_INFO
-            POPADS_SITE
             POPADS_FYI
-            POPADS_IO
+            POPADS_FOO
+            POPADS_CLOUD
+            POPADS_FUN
             POPADS_NINJA_XYZ
             POPADS_NINJA_ONLINE
             POPADS_KAMEHA
