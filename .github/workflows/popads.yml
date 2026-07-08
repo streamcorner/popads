@@ -15,7 +15,6 @@ jobs:
       
       - name: Fetch, extract, and commit PopAds libraries
         env:
-          POPADS_INFO: ${{ secrets.POPADS_INFO }}
           POPADS_FYI: ${{ secrets.POPADS_FYI }}
           POPADS_FOO: ${{ secrets.POPADS_FOO }}
           POPADS_CLOUD: ${{ secrets.POPADS_CLOUD }}
@@ -24,11 +23,7 @@ jobs:
           POPADS_NINJA_XYZ: ${{ secrets.POPADS_NINJA_XYZ }}
           POPADS_NINJA_ONLINE: ${{ secrets.POPADS_NINJA_ONLINE }}
 
-          POPADS_KAMEHA: ${{ secrets.POPADS_KAMEHA }}
-          
-          POPADS_GETSU_SIMPLE: ${{ secrets.POPADS_GETSU_SIMPLE }}
           POPADS_GETSU_SPORTSEMBED: ${{ secrets.POPADS_GETSU_SPORTSEMBED }}
-          POPADS_GETSU_ALPHA: ${{ secrets.POPADS_GETSU_ALPHA }}
           POPADS_GETSU_GOOZ: ${{ secrets.POPADS_GETSU_GOOZ }}
           POPADS_GETSU_NICK: ${{ secrets.POPADS_GETSU_NICK }}
           POPADS_GETSU_PLAY2: ${{ secrets.POPADS_GETSU_PLAY2 }}
@@ -36,17 +31,13 @@ jobs:
 
         run: |
           POPADS_VARS=(
-            POPADS_INFO
             POPADS_FYI
             POPADS_FOO
             POPADS_CLOUD
             POPADS_FUN
             POPADS_NINJA_XYZ
             POPADS_NINJA_ONLINE
-            POPADS_KAMEHA
-            POPADS_GETSU_SIMPLE
             POPADS_GETSU_SPORTSEMBED
-            POPADS_GETSU_ALPHA
             POPADS_GETSU_GOOZ
             POPADS_GETSU_NICK
             POPADS_GETSU_PLAY2
