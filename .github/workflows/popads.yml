@@ -29,6 +29,7 @@ jobs:
           POPADS_GETSU_NICK: ${{ secrets.POPADS_GETSU_NICK }}
           POPADS_GETSU_PLAY2: ${{ secrets.POPADS_GETSU_PLAY2 }}
           POPADS_GETSU_TOPEMBED: ${{ secrets.POPADS_GETSU_TOPEMBED }}
+          POPADS_GETSU_AMAZON: ${{ secrets.POPADS_GETSU_AMAZON }}
 
         run: |
           POPADS_VARS=(
@@ -44,6 +45,7 @@ jobs:
             POPADS_GETSU_NICK
             POPADS_GETSU_PLAY2
             POPADS_GETSU_TOPEMBED
+            POPADS_GETSU_AMAZON
           )
 
           for var in "${POPADS_VARS[@]}"; do
